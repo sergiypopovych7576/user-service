@@ -2,6 +2,7 @@
 using Services.Shared.Domain.Interfaces;
 using Services.Shared.Infrastructure;
 using Services.Shared.Services.Hash;
+using User.Service.Services.UserSign;
 using User.Services;
 
 namespace User.Service.Configs
@@ -11,8 +12,9 @@ namespace User.Service.Configs
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterAssemblyTypes(new[] {
-                typeof(RegisterService).Assembly,
-                typeof(HashService).Assembly
+                typeof(UserService).Assembly,
+                typeof(HashService).Assembly,
+                typeof(UserSignService).Assembly
             }).AsImplementedInterfaces().InstancePerLifetimeScope();
 
             builder.RegisterGeneric(typeof(ReadRepository<>))

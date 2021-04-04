@@ -10,13 +10,13 @@ using User.Domain.Interfaces;
 
 namespace User.Services
 {
-    public class RegisterService : IRegisterService
+    public class UserService : IUserService
     {
         private readonly IReadRepository<Domain.Entities.User> _userReadRepo;
         private readonly IWriteRepository<Domain.Entities.User> _userWriteRepo;
         private readonly IHashService _hashService;
 
-        public RegisterService(IReadRepository<Domain.Entities.User> userReadRepo,
+        public UserService(IReadRepository<Domain.Entities.User> userReadRepo,
             IWriteRepository<Domain.Entities.User> userWriteRepo,
             IHashService hashService)
         {
@@ -44,7 +44,7 @@ namespace User.Services
             return user;
         }
 
-        public async Task RegisterNewUser(Domain.Entities.User user)
+        public async Task RegisterNew(Domain.Entities.User user)
         {
             Guard.AgainstNull(user);
 

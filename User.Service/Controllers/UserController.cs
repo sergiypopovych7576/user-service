@@ -1,43 +1,44 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
-using User.Domain.Enitites;
 using User.Domain.Interfaces;
 using User.Service.Models.User;
-using User.Service.ViewModels.User;
+using User.Service.Services.UserSign;
 
 namespace User.Service.Controllers
 {
     [Route("user")]
     public class UserController : BaseController
     {
-        private readonly IRegisterService _registerService;
+        private readonly IUserService _userService;
+        private readonly IUserSignService _userSignService;
         private readonly IMapper _mapper;
 
-        public UserController(IRegisterService registerService, IMapper mapper)
+        public UserController(IUserService userService, IUserSignService userSignService,
+            IMapper mapper)
         {
-            _registerService = registerService;
+            _userService = userService;
+            _userSignService = userSignService;
             _mapper = mapper;
         }
 
         [HttpPost]
         [Route("register")]
+        [AllowAnonymous]
         public async Task Register(RegisterModel model)
         {
             var user = _mapper.Map<Domain.Entities.User>(model);
 
-            await _registerService.RegisterNewUser(user);
+            await _userService.RegisterNew(user);
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<UserViewModel> Login(LoginModel model)
+        [AllowAnonymous]
+        public Task<string> Login(LoginModel model)
         {
-            var login = _mapper.Map<Login>(model);
-
-            var user = await _registerService.Login(login);
-
-            return _mapper.Map<UserViewModel>(user);
+            return _userSignService.GenerateToken(model);
         }
     }
 }

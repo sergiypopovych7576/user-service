@@ -3,9 +3,9 @@ using User.Domain.Enitites;
 
 namespace User.Domain.Interfaces
 {
-    public interface IRegisterService
+    public interface IUserService
     {
-        Task RegisterNewUser(Entities.User user);
+        Task RegisterNew(Entities.User user);
         Task<Entities.User> Login(Login login);
     }
 }

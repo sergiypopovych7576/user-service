@@ -5,7 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Services.Shared\Services.Shared.csproj" />
+    <PackageReference Include="Services.Shared" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\User.Domain\User.Domain.csproj" />
   </ItemGroup>
 
