@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using User.Domain.Enitites;
 using User.Domain.Interfaces;
-using User.Service.Models.Register;
+using User.Service.Models.User;
+using User.Service.ViewModels.User;
 
 namespace User.Service.Controllers
 {
@@ -24,7 +26,18 @@ namespace User.Service.Controllers
         {
             var user = _mapper.Map<Domain.Entities.User>(model);
 
-           await _registerService.RegisterNewUser(user);
+            await _registerService.RegisterNewUser(user);
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<UserViewModel> Login(LoginModel model)
+        {
+            var login = _mapper.Map<Login>(model);
+
+            var user = await _registerService.Login(login);
+
+            return _mapper.Map<UserViewModel>(user);
         }
     }
 }

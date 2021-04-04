@@ -84,8 +84,8 @@ namespace User.Service
                     await context.Response.WriteAsJsonAsync(exception.FormatException());
                     return;
                 }
-                
-                if(exception.GetType().IsAssignableFrom(typeof(UserException)))
+
+                if (exception.GetType().IsSubclassOf(typeof(UserException)))
                 {
                     await context.Response.WriteAsJsonAsync(exception.Message);
                     return;

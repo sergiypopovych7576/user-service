@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
-using User.Service.Models.Register;
+using User.Domain.Enitites;
+using User.Service.Models.User;
+using User.Service.ViewModels.User;
 
 namespace User.Service.Profiles
 {
@@ -8,6 +10,8 @@ namespace User.Service.Profiles
         public UserMappingProfile()
         {
             CreateMap<RegisterModel, Domain.Entities.User>();
+            CreateMap<LoginModel, Login>();
+            CreateMap<Domain.Entities.User, UserViewModel>();
         }
     }
 }

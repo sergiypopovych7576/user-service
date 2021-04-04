@@ -1,4 +1,4 @@
-﻿namespace User.Service.Models.Register
+﻿namespace User.Service.Models.User
 {
     public class RegisterModel
     {

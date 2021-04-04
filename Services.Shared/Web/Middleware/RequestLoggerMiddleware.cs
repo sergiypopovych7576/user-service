@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Threading.Tasks;
 
 namespace Services.Shared.Web.Middleware
@@ -19,9 +20,14 @@ namespace Services.Shared.Web.Middleware
         {
             _logger.LogInformation($"[Request Started]: {context.Request.Host}{context.Request.Path}");
 
-            await _next(context);
-
-            _logger.LogInformation($"[Request Ended]: {context.Request.Path}");
+            try
+            {
+                await _next(context);
+            }
+            finally
+            {
+                _logger.LogInformation($"[Request Ended]: {context.Request.Path}");
+            }
         }
     }
 }
