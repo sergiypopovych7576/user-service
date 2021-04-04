@@ -7,10 +7,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Services.Shared.Domain.Interfaces;
 using Services.Shared.Exceptions;
 using Services.Shared.Extensions;
+using Services.Shared.Web.Middleware;
 using User.Database;
 using User.Service.Configs;
 using User.Service.Profiles;
@@ -54,8 +56,11 @@ namespace User.Service
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
+            logger.LogInformation("Starting application");
+            logger.LogInformation($"Environment: {env.EnvironmentName}");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -74,7 +79,7 @@ namespace User.Service
                 var exceptionHandlerPathFeature = context.Features.Get<IExceptionHandlerPathFeature>();
                 var exception = exceptionHandlerPathFeature.Error;
 
-                if(env.IsDevelopment())
+                if (env.IsDevelopment())
                 {
                     await context.Response.WriteAsJsonAsync(exception.FormatException());
                     return;
@@ -88,6 +93,8 @@ namespace User.Service
 
                 await context.Response.WriteAsJsonAsync("Internal Error");
             }));
+
+            app.UseMiddleware<RequestLoggerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
