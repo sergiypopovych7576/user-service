@@ -36,7 +36,7 @@ namespace User.Service.Controllers
         [HttpPost]
         [Route("token")]
         [AllowAnonymous]
-        public Task<string> Token(LoginDto login)
+        public string Token(LoginDto login)
         {
             return _tokenService.GenerateToken(login);
         }
