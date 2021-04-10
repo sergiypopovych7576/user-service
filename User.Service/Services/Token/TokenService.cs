@@ -1,12 +1,8 @@
-﻿using AutoMapper;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using User.Domain.DTO;
 using User.Domain.Interfaces;
 using User.Service.Configs;
@@ -15,18 +11,16 @@ namespace User.Service.Services.Token
 {
     public class TokenService : ITokenService
     {
-        private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly SecretKeyConfig _secretKeyConfig;
 
-        public TokenService(IMapper mapper, IUserService userService, IOptions<SecretKeyConfig> secretKeyConfig)
+        public TokenService(IUserService userService, IOptions<SecretKeyConfig> secretKeyConfig)
         {
-            _mapper = mapper;
             _userService = userService;
             _secretKeyConfig = secretKeyConfig.Value;
         }
 
-        public async Task<string> GenerateToken(LoginDto login)
+        public string GenerateToken(LoginDto login)
         {
             var user = _userService.Login(login);
 
