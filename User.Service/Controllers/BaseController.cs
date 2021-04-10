@@ -3,8 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace User.Service.Controllers
 {
-    [ApiController]
+
     [Authorize]
+    [ApiController]
     public class BaseController : ControllerBase
     {
     }

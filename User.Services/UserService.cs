@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Services.Shared.Domain.Interfaces;
-using Services.Shared.Services;
+﻿using Services.Shared.Services;
 using Services.Shared.Services.Hash;
+using Services.Shared.Services.Repositories;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
-using User.Domain.Enitites;
+using User.Domain.DTO;
 using User.Domain.Exceptions;
 using User.Domain.Interfaces;
 
@@ -25,7 +25,7 @@ namespace User.Services
             _hashService = hashService;
         }
 
-        public async Task<Domain.Entities.User> Login(Login login)
+        public Domain.Entities.User Login(LoginDto login)
         {
             Guard.AgainstNull(login);
             Guard.AgainstNull(login.Email);
@@ -33,8 +33,8 @@ namespace User.Services
 
             var hashPassword = _hashService.HashText(login.Password);
 
-            var user = await _userReadRepo.Get()
-                .FirstOrDefaultAsync(user => user.Email == login.Email && user.Password == hashPassword);
+            var user = _userReadRepo.Get().FirstOrDefault(user =>
+                user.Email == login.Email && user.Password == hashPassword);
 
             if (user == null)
             {

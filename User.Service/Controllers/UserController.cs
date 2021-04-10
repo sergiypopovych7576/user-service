@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using User.Domain.DTO;
 using User.Domain.Interfaces;
-using User.Service.Models.User;
-using User.Service.Services.UserSign;
+using User.Service.Services.Token;
 
 namespace User.Service.Controllers
 {
@@ -12,33 +12,33 @@ namespace User.Service.Controllers
     public class UserController : BaseController
     {
         private readonly IUserService _userService;
-        private readonly IUserSignService _userSignService;
+        private readonly ITokenService _tokenService;
         private readonly IMapper _mapper;
 
-        public UserController(IUserService userService, IUserSignService userSignService,
+        public UserController(IUserService userService, ITokenService tokenService,
             IMapper mapper)
         {
             _userService = userService;
-            _userSignService = userSignService;
+            _tokenService = tokenService;
             _mapper = mapper;
         }
 
         [HttpPost]
         [Route("register")]
         [AllowAnonymous]
-        public async Task Register(RegisterModel model)
+        public async Task Register(RegisterDto register)
         {
-            var user = _mapper.Map<Domain.Entities.User>(model);
+            var user = _mapper.Map<Domain.Entities.User>(register);
 
             await _userService.RegisterNew(user);
         }
 
         [HttpPost]
-        [Route("login")]
+        [Route("token")]
         [AllowAnonymous]
-        public Task<string> Login(LoginModel model)
+        public Task<string> Token(LoginDto login)
         {
-            return _userSignService.GenerateToken(model);
+            return _tokenService.GenerateToken(login);
         }
     }
 }

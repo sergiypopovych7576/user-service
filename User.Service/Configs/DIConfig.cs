@@ -1,8 +1,8 @@
 ﻿using Autofac;
-using Services.Shared.Domain.Interfaces;
 using Services.Shared.Infrastructure;
 using Services.Shared.Services.Hash;
-using User.Service.Services.UserSign;
+using Services.Shared.Services.Repositories;
+using User.Service.Services.Token;
 using User.Services;
 
 namespace User.Service.Configs
@@ -14,7 +14,7 @@ namespace User.Service.Configs
             builder.RegisterAssemblyTypes(new[] {
                 typeof(UserService).Assembly,
                 typeof(HashService).Assembly,
-                typeof(UserSignService).Assembly
+                typeof(TokenService).Assembly
             }).AsImplementedInterfaces().InstancePerLifetimeScope();
 
             builder.RegisterGeneric(typeof(ReadRepository<>))

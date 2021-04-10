@@ -1,11 +1,11 @@
 ﻿using System.Threading.Tasks;
-using User.Domain.Enitites;
+using User.Domain.DTO;
 
 namespace User.Domain.Interfaces
 {
     public interface IUserService
     {
         Task RegisterNew(Entities.User user);
-        Task<Entities.User> Login(Login login);
+        Entities.User Login(LoginDto login);
     }
 }

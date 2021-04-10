@@ -1,4 +1,4 @@
-﻿using Services.Shared.Domain.Interfaces;
+﻿using Services.Shared.Domain.Entities;
 using System;
 
 namespace User.Domain.Entities

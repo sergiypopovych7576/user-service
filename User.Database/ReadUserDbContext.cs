@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Services.Shared.Domain.Interfaces;
+using Services.Shared.Infrastructure.Contexts;
 
 namespace User.Database
 {

@@ -1,4 +1,5 @@
 using Autofac;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +9,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Services.Shared.Domain.Interfaces;
+using Services.Shared.Infrastructure.Contexts;
 using Services.Shared.Web.Middleware;
 using System.Text;
 using User.Database;
@@ -55,7 +56,6 @@ namespace User.Service
             builder.RegisterModule(new DIConfig());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
             logger.LogInformation("Starting application");
@@ -90,12 +90,13 @@ namespace User.Service
 
         private void ConfigureAuthentication(IServiceCollection services)
         {
-            var config = new SecretKeyConfig();
-            Configuration.GetSection(nameof(SecretKeyConfig)).Bind(config);
+            var secretKeyConfig = new SecretKeyConfig();
+            Configuration.GetSection(nameof(SecretKeyConfig)).Bind(secretKeyConfig);
 
-            services.AddAuthentication("Bearer")
-             .AddJwtBearer("Bearer", options =>
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
                 {
+                    options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -105,9 +106,9 @@ namespace User.Service
                         ValidAudience = Authorization.AUDIENCE,
 
                         ValidateLifetime = true,
+                        IssuerSigningKey = Authorization.CreateKey(secretKeyConfig.Key),
 
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config.Key))
+                        ValidateIssuerSigningKey = true
                     };
                 });
         }

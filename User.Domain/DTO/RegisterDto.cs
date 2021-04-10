@@ -1,8 +1,9 @@
-﻿namespace User.Service.Models.User
+﻿namespace User.Domain.DTO
 {
-    public class LoginModel
+    public class RegisterDto
     {
         public string Email { get; set; }
+        public string Name { get; set; }
         public string Password { get; set; }
     }
 }

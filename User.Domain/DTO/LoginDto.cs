@@ -1,6 +1,6 @@
-﻿namespace User.Domain.Enitites
+﻿namespace User.Domain.DTO
 {
-    public class Login
+    public class LoginDto
     {
         public string Email { get; set; }
         public string Password { get; set; }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;
-using Services.Shared.Exceptions;
+using Services.Shared.Domain.Exceptions;
 using Services.Shared.Extensions;
 using System.Threading.Tasks;
 

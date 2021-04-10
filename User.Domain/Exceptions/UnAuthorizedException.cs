@@ -1,4 +1,4 @@
-﻿using Services.Shared.Exceptions;
+﻿using Services.Shared.Domain.Exceptions;
 using System;
 
 namespace User.Domain.Exceptions
