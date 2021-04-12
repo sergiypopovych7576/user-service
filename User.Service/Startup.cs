@@ -16,6 +16,8 @@ using User.Database;
 using User.Service.Configs;
 using User.Service.Profiles;
 using User.Service.Startups;
+using Services.Shared.Web.Loggers;
+using User.Service.API.Configs;
 
 namespace User.Service
 {
@@ -56,17 +58,23 @@ namespace User.Service
             builder.RegisterModule(new DIConfig());
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, ILogger<Startup> logger)
         {
-            logger.LogInformation("Starting application");
-            logger.LogInformation($"Environment: {env.EnvironmentName}");
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "User.Service v1"));
             }
+            else
+            {
+                var fileLoggerConfig = new FileLoggerConfig();
+                Configuration.GetSection("Logging").GetSection("File").Bind(fileLoggerConfig);
+                loggerFactory.AddFile(fileLoggerConfig.Path);
+            }
+
+            logger.LogInformation("Starting application");
+            logger.LogInformation($"Environment: {env.EnvironmentName}");
 
             app.UseHttpsRedirection();
 
